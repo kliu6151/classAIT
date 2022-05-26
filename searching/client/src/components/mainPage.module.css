@@ -1,0 +1,52 @@
+.title {
+    text-align: center;
+
+
+}
+
+.search {
+    text-align: center;
+}
+
+.picture {
+    width: 20%;
+    float:left;
+    /* display: inline; */
+}
+
+.Mtitle{
+    text-align: center;
+}
+
+.votes {
+    width:10%;
+    display:inline;
+}
+.upVote {
+    width:10%;
+    float:top;
+    font-size:50px;
+    display: block;
+}
+.downVote {
+    width:10%;
+    /* float:top; */
+    font-size:50px;
+    display: block;
+}
+.movieInfo {
+    display:inline;
+}
+
+.table {
+    height: 50%;
+}
+
+.err {
+    text-align: center;
+}
+
+.invis {
+    display:none;
+}
+
