@@ -89,15 +89,18 @@ function MainPage() {
                         <div className={styles.search}>
                             <input  type = "text" placeholder="Search ..." name="search" onKeyPress = {onEnter} />
                         </div>
-                        <content>
+                        <content className={styles.allContent}>
                             <span className={styles.votes}>
                                 <span className = {movie.Response === 'False' ? styles.invis : styles.upVote} onClick = {(e) => handlerForUpVote(e,movie)}>&#x2191; {dbMovie.likes}</span>
                                 <span className = {movie.Response === 'False' ? styles.invis : styles.downVote} onClick = {(e) => handlerForDownVote(e,movie)}>&#8595; {dbMovie.dislikes}</span>
+                            </span>    
                                 <img className = {styles.picture} src = {movie.Poster}  alt = ""/>
+                            <span className={styles.infor}>
                                 <h1 className= {styles.Mtitle}>{movie.Title}</h1>
                                 <p className= {styles.desc}> {movie.Plot}</p>
-                                <h4 className= {styles.err}>{error}</h4>
                             </span>
+                                <h4 className= {styles.err}>{error}</h4>
+                            
                         </content>
                     </nav>
 
