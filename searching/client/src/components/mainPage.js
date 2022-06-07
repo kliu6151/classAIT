@@ -13,14 +13,15 @@ function MainPage() {
         if(event.charCode === 13) { 
             const key = "9df453a9"
             const url = `http://www.omdbapi.com/?t=${event.target.value}&apikey=${key}`;
+            var isExist = await axios.get('http://localhost:8000/getMovie')
             try {
                 try {
-                 var isExist = await axios.get('http://localhost:8000/getMovie')
                  var alreadyThere = false;
                  for(let i = 0; i < isExist.data.length; i++) {
                      if(event.target.value.toString().toLowerCase() === isExist.data[i].title.toString().toLowerCase()) {
                          alreadyThere = true;
                          setDbMovie(isExist.data[i]);
+                         console.log(dbMovie);
                          break;
                      }
                  }
@@ -31,7 +32,18 @@ function MainPage() {
 
                 const response = await fetch(url);
                 data = await response.json();
+                // console.log(isExist.data.filter)
                 setMovie(data)
+
+                let existing = isExist.data.filter(e => e.title === data.Title)
+                console.log(existing)
+                if(existing.length !== 0) {
+                    if(data.Title === existing[0].title) {
+                        alreadyThere = true;
+                        // console.log(data);
+                        setDbMovie(existing[0]);
+                    } 
+                }
                 if(data.Response === "False") {
                     setError("Movie not found!")
                 }
@@ -39,8 +51,12 @@ function MainPage() {
                     if(alreadyThere === false) {
                         let m = {
                             title: data.Title,
+                            likes: 0,
+                            dislikes: 0
                         }
                         await axios.post('http://localhost:8000/addMovie', m);
+                        setDbMovie(m);
+                        
                     }
                     setError("");
                 }
