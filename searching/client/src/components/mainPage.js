@@ -15,32 +15,15 @@ function MainPage() {
             const url = `http://www.omdbapi.com/?t=${event.target.value}&apikey=${key}`;
             var isExist = await axios.get('http://localhost:8000/getMovie')
             try {
-                try {
-                 var alreadyThere = false;
-                 for(let i = 0; i < isExist.data.length; i++) {
-                     if(event.target.value.toString().toLowerCase() === isExist.data[i].title.toString().toLowerCase()) {
-                         alreadyThere = true;
-                         setDbMovie(isExist.data[i]);
-                         console.log(dbMovie);
-                         break;
-                     }
-                 }
-                }
-                catch(e) {
-                    console.log(e);
-                }
-
+                var alreadyThere = false;
                 const response = await fetch(url);
                 data = await response.json();
-                // console.log(isExist.data.filter)
                 setMovie(data)
 
                 let existing = isExist.data.filter(e => e.title === data.Title)
-                console.log(existing)
                 if(existing.length !== 0) {
                     if(data.Title === existing[0].title) {
                         alreadyThere = true;
-                        // console.log(data);
                         setDbMovie(existing[0]);
                     } 
                 }
@@ -68,7 +51,7 @@ function MainPage() {
 
     const handlerForUpVote = async(event,m) => {
         event.preventDefault();
-        if(m !== null) {
+        if(m.Title !== undefined) {
             const mov = await axios.get('http://localhost:8000/getMovie', m)
             for(let i = 0; i < mov.data.length; i++) {
                 if(m.Title.toString().toLowerCase() === mov.data[i].title.toString().toLowerCase()) {
@@ -80,11 +63,12 @@ function MainPage() {
             upd.likes++;
             setDbMovie(upd);
         }
+
     }
 
     const handlerForDownVote = async(event,m) => {
         event.preventDefault();
-        if(m !== null) {
+        if(m.Title !== undefined) {
             const mov = await axios.get('http://localhost:8000/getMovie', m)
             for(let i = 0; i < mov.data.length; i++) {
                 if(m.Title.toString().toLowerCase() === mov.data[i].title.toString().toLowerCase()) {
@@ -107,8 +91,8 @@ function MainPage() {
                         </div>
                         <content className={styles.allContent}>
                             <span className={styles.votes}>
-                                <span className = {movie.Response === 'False' ? styles.invis : styles.upVote} onClick = {(e) => handlerForUpVote(e,movie)}>&#x2191; {dbMovie.likes}</span>
-                                <span className = {movie.Response === 'False' ? styles.invis : styles.downVote} onClick = {(e) => handlerForDownVote(e,movie)}>&#8595; {dbMovie.dislikes}</span>
+                                <span className = {movie.Title === undefined ? styles.invis : styles.upVote} onClick = {(e) => handlerForUpVote(e,movie)}>&#x2191; {dbMovie.likes}</span>
+                                <span className = {movie.Title === undefined ? styles.invis : styles.downVote} onClick = {(e) => handlerForDownVote(e,movie)}>&#8595; {dbMovie.dislikes}</span>
                             </span>    
                                 <img className = {styles.picture} src = {movie.Poster}  alt = ""/>
                             <span className={styles.infor}>
